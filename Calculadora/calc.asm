@@ -1,81 +1,134 @@
 .model small
-.stack 100
+
+
+.stack 64
 .data
-msj1 db 'Numero 1: ','$'
-msj2 db 13,10,'Numero 2: ','$'
-msj3 db 13,10,'Suma: ','$'
+  
+;declarando variables globales
+numero1 db 0
+numero2 db 0
 
-msj6 db 13,10,'Division: ','$'
-linea db 13,10,'$'
-var1 db 0
-var2 db 0
+suma db 0
+resta db 0
+multiplicacion db 0
+division db 0
+modulo db 0
+
+msjn1 db 10,13, "Ingrese el primer numero= ",'$';ingrese n1
+msjn2 db 10,13, "Ingrese el segundo numero= ",'$';ingrese n2
+
+;mensaje para mostrar los resultados
+ 
+msjnS db 10,13, "La suma es= ",'$'
+msjnR db 10,13, "La resta= ",'$'
+msjnM db 10,13, "La Multiplicacion es= ",'$'
+msjnD db 10,13, "La division es = ",'$' 
+msjnMod db 10,13, "El modulo es = ",'$' 
+
 .code
-.startup
+begin proc far
+    
+    ;direccionamiento del procedimiento
+    mov ax, @data
+    mov ds,ax
+    
+    ;solicitar del teclado numero 1
+    
+    mov ah, 09
+    lea dx, msjn1
+    int 21h
+    mov ah, 01
+    int 21h
+    sub al, 30h
+    mov numero1,al
+    
+    ;solicitar del teclado numero 2
+    
+    mov ah, 09
+    lea dx, msjn2
+    int 21h
+    mov ah, 01
+    int 21h
+    sub al, 30h
+    mov numero2,al
+    
+    ;operaciones aritmeticas
+                  
+    ;SUMA             
+    mov al,numero1
+    add al,numero2
+    mov suma,al  
+    
+    ;RESTA
+    mov al,numero1
+    sub al,numero2
+    mov resta,al
+    
+    ;MULTIPLICACION
+    mov al,numero1
+    mul numero2
+    mov multiplicacion,al
+    
+    ;DIVISION
+    mov al,numero1
+    div numero2
+    mov division,al
+    
+    ;MODULO
+    mov al, numero1
+    div numero2
+    mov modulo,ah 
+       
+    ;Mostrar los mensajes de los resultados 
+    
+    ;mostrando la suma
+    mov ah,09
+    lea dx,msjnS
+    int 21h
+    mov dl,suma
+    add dl,30h 
+    mov ah,02
+    int 21h  
+    
+    ;mostrando la resta
+    mov ah,09
+    lea dx,msjnR
+    int 21h
+    mov dl,resta
+    add dl,30h 
+    mov ah,02
+    int 21h
+    
+    ;mostrando la multiplicacion
+    mov ah,09
+    lea dx,msjnM
+    int 21h
+    mov dl,multiplicacion
+    add dl,30h 
+    mov ah,02
+    int 21h
+    
+    ;mostrando la division
+    mov ah,09
+    lea dx,msjnD
+    int 21h
+    mov dl,division
+    add dl,30h 
+    mov ah,02
+    int 21h
+                
+    ;mostrando el modulo     
+    mov ah,09
+    lea dx,msjnMod
+    int 21h
+    mov dl,modulo
+    add dl,30h 
+    mov ah,02
+    int 21h
+  
+    ;cierre del programa
+    mov ah,4ch
+    int 21h
 
-call limpia
-mov ah,09h
-lea dx, msj1 
-int 21h
-
-call leer 
-sub al,30h 
-mov var1,al 
-mov ah,09h
-lea dx, msj2 
-int 21h
-
-call leer 
-sub al,30h 
-mov var2,al 
-mov bl,var2 
-
-; SUMA
-add bl,var1 
-mov ah,09h
-lea dx,msj3 
-int 21h
-mov dl,bl 
-add dl,30h    
-mov ah,02h 
-int 21h
-
-
-
-;DIVISION
-mov ah,09h
-lea dx,msj6 
-int 21h
-xor ax,ax 
-mov al,var2
-mov bl,al
-mov al,var1
-div bl ;
-mov bl,al
-mov dl,bl
-add dl,30h
-mov ah,02h
-int 21h
-.exit
-
-; PROCEDIMIENTOS
-salto proc near
-mov ah,09h
-lea dx,linea
-int 21h
-mov dl,00h
-ret
-salto endp
-
-leer proc near
-mov ah,01h
-int 21h
-ret
-leer endp
-
-limpia proc near
-mov ah,00h
-mov al,03h
-int 10h
-ret
-limpia endp
-end
+    end begin
+    
