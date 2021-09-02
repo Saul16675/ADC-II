@@ -1,10 +1,8 @@
 .model small
-
-
 .stack 64
 .data
   
-;declarando variables globales
+;DECLARACION DE VARIABLES
 numero1 db 0
 numero2 db 0
 
@@ -17,7 +15,7 @@ modulo db 0
 msjn1 db 10,13, "Ingrese el primer numero= ",'$';ingrese n1
 msjn2 db 10,13, "Ingrese el segundo numero= ",'$';ingrese n2
 
-;mensaje para mostrar los resultados
+;MENSAJES A MOSTRAR
  
 msjnS db 10,13, "La suma es= ",'$'
 msjnR db 10,13, "La resta= ",'$'
